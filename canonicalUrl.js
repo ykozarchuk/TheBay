@@ -1,14 +1,26 @@
 function computeCanonicalURL() {
-    var CUSTOM_CATEGORY = 'custom';
-
     function isRefinementValueInURL(parametersKey, url) {
         var value = request.httpParameters.get('prefv' + parametersKey.slice(-1));
-        var valueString = value ? value[0].trim().replace(/(\s&\s)|\s/g, '-').toLowerCase() : '';
+        var valueString = value ? value[0].trim().replace(/(\s&\s)|\s/g, '-').replace(/\|/g, '_').toLowerCase() : '';
         return url.indexOf(valueString) > -1;
     }
 
-    var canonicalURL = request.httpProtocol + '://' + request.httpHost + request.httpHeaders['x-is-path_info'];
-    var parentCategory = request.httpHeaders['x-is-path_info'].split(/\//)[2];
+    function getParentCanonicalURL(parametersKeys, urlPath) {
+        var paths = urlPath.split(/\//);
+        paths = paths.filter(function (path) {
+            return !parametersKeys.some(function (key) {
+                return key.indexOf('prefn') > -1 ? isRefinementValueInURL(key, path) : false;
+            });
+        });
+
+        return request.httpProtocol + '://' + request.httpHost + paths.join('/');
+    }
+
+    var path = request.httpHeaders['x-is-path_info'];
+    var canonicalURL = request.httpProtocol + '://' + request.httpHost + path;
+    var parentCategory = path.split(/\//)[2];
+    var skippedCategories = ['custom', 'new', 'sale-clearance', 'our-brands'];
+    var isSkippedCategory = skippedCategories.indexOf(parentCategory) > -1;
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
 
@@ -20,7 +32,11 @@ function computeCanonicalURL() {
         return value[0].indexOf('|') > -1;
     });
 
-    if (parentCategory === CUSTOM_CATEGORY || preferences.length > 1 || multipleValues.length > 0) {
+    if (multipleValues.length > 0) {
+        return getParentCanonicalURL(httpParametersKeys, path);
+    }
+
+    if (isSkippedCategory || preferences.length > 1) {
         return canonicalURL;
     }
 
