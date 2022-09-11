@@ -1,0 +1,44 @@
+function computeCanonicalURL() {
+    var CUSTOM_CATEGORY = 'custom';
+
+    function isRefinementValueInURL(parametersKey, url) {
+        var value = request.httpParameters.get('prefv' + parametersKey.slice(-1));
+        var valueString = value ? value[0].trim().replace(/(\s&\s)|\s/g, '-').toLowerCase() : '';
+        return url.indexOf(valueString) > -1;
+    }
+
+    var canonicalURL = request.httpProtocol + '://' + request.httpHost + request.httpHeaders['x-is-path_info'];
+    var parentCategory = request.httpHeaders['x-is-path_info'].split(/\//)[2];
+    var httpParametersKeys = request.httpParameters.keySet().toArray();
+    var httpParametersValues = request.httpParameters.values().toArray();
+
+    var preferences = httpParametersKeys.filter(function (key) {
+        return key.indexOf('prefn') > -1 && !isRefinementValueInURL(key, canonicalURL);
+    });
+
+    var multipleValues = httpParametersValues.filter(function (value) {
+        return value[0].indexOf('|') > -1;
+    });
+
+    if (parentCategory === CUSTOM_CATEGORY || preferences.length > 1 || multipleValues.length > 0) {
+        return canonicalURL;
+    }
+
+    var refinedParameters = httpParametersKeys.reduce(function (accumulator, key, index) {
+        var value = httpParametersValues[index][0];
+        var isPreferenceName = key.indexOf('prefn') > -1;
+        var isPreferenceValue = key.indexOf('prefv') > -1;
+        var skipCurrentParameter = !(isPreferenceName || isPreferenceValue);
+        var skipCurrentRefinementValue = isPreferenceName && isRefinementValueInURL(key, canonicalURL);
+        var skipCurrentRefinement = isPreferenceName && value !== 'colorRefinement' && value !== 'refinementStyle';
+        var skipCurrentValue = isPreferenceValue && accumulator.indexOf('prefn' + key.slice(-1)) === -1;
+
+        if (skipCurrentParameter || skipCurrentRefinementValue || skipCurrentRefinement || skipCurrentValue) {
+            return accumulator;
+        }
+
+        return accumulator + (accumulator.length > 0 ? '&' : '?') + key + '=' + value;
+    }, '');
+
+    return canonicalURL + refinedParameters;
+}
