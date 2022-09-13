@@ -12,9 +12,12 @@ function modifyPageMetaTag(tag, viewData) {
     var result = tag.content;
     var type = tag.ID;
 
-    if (!empty(viewData.productSearch)) {
+    if (!empty(viewData.apiProductSearch)) {
+        var searchRefinementsFactory = require('*/cartridge/scripts/factories/searchRefinements');
         var category = viewData.category;
-        var refinements = viewData.productSearch.cachedRefinements;
+        var refinements = viewData.apiProductSearch.refinements;
+        var refinementDefinitions = refinements.refinementDefinitions;
+        var refinementDefinitionsIterator = refinementDefinitions.iterator();
         var isWomenCategory = tag.content.indexOf(WOMEN) > -1;
         var isMenCategory = tag.content.indexOf(MEN) > -1;
         var isTopLevelCategory = isWomenCategory || isMenCategory;
@@ -22,18 +25,25 @@ function modifyPageMetaTag(tag, viewData) {
         var isCategoryContainsRefinementValue = false;
         var isMultipleRefinementValues = false;
 
-        Object.keys(refinements).forEach(function (key) {
-            var selected = refinements[key].selected;
+        while (refinementDefinitionsIterator.hasNext()) {
+            var definition = refinementDefinitionsIterator.next();
+            var refinementValues = refinements.getAllRefinementValues(definition);
+            var values = searchRefinementsFactory.get(viewData.apiProductSearch, definition, refinementValues);
+            var selected = values.filter(function (value) {
+                return value.selected;
+            });
+            var containsRefinementValue = selected.some(function (selectedValue) {
+                return category.displayName.indexOf(selectedValue.displayValue) > -1;
+            });
+
+            if (containsRefinementValue) {
+                isCategoryContainsRefinementValue = true;
+            }
+
             if (selected.length > 1) {
                 isMultipleRefinementValues = true;
             }
-
-            Object.keys(selected).forEach(function (key1) {
-                if (category.displayName.indexOf(selected[key1].displayValue) > -1) {
-                    isCategoryContainsRefinementValue = true;
-                }
-            });
-        });
+        }
 
         if (isCategoryContainsRefinementValue && isTopLevelCategory) {
             if (type === 'title' || type === 'YOUR_H1_IDENTIFIER') {
