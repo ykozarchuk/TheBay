@@ -14,7 +14,7 @@ function modifyPageMetaTag(tag, viewData) {
 
     if (!empty(viewData.apiProductSearch)) {
         var searchRefinementsFactory = require('*/cartridge/scripts/factories/searchRefinements');
-        var category = viewData.category;
+        var category = viewData.apiProductSearch.category;
         var refinements = viewData.apiProductSearch.refinements;
         var refinementDefinitions = refinements.refinementDefinitions;
         var refinementDefinitionsIterator = refinementDefinitions.iterator();
@@ -57,7 +57,8 @@ function modifyPageMetaTag(tag, viewData) {
 
         if (isMultipleRefinementValues && isTopLevelCategory) {
             if (type === 'title' || type === 'YOUR_H1_IDENTIFIER') {
-                result = topLevelCategory + ' ' + category.displayName + (type === 'title' ? THE_BAY : '');
+                result = (category.displayName.indexOf(topLevelCategory) > -1 ? '' : topLevelCategory + ' ')
+                    + category.displayName + (type === 'title' ? THE_BAY : '');
             } else if (type === 'description') {
                 result = tag.content.substr(tag.content.indexOf('.') + 1).trim();
             }
