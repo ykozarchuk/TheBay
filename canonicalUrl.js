@@ -19,8 +19,12 @@ function computeCanonicalURL() {
     var path = request.httpHeaders['x-is-path_info'];
     var canonicalURL = request.httpProtocol + '://' + request.httpHost + path;
     var parentCategory = path.split(/\//)[2];
+    var subCategory = parentCategory + '/' + path.split(/\//)[3];
     var skippedCategories = ['custom', 'new', 'sale-clearance', 'our-brands'];
+    var skippedSubCategories = ['women/new-arrivals', 'women/young-adult-1', 'men/new-arrivals-this-week',
+        'men/young-adult', 'home/new-arrivals', 'beauty/best-sellers', 'home/best-sellers'];
     var isSkippedCategory = skippedCategories.indexOf(parentCategory) > -1;
+    var isSkippedSubCategory = skippedSubCategories.indexOf(subCategory) > -1;
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
 
@@ -36,7 +40,7 @@ function computeCanonicalURL() {
         return getParentCanonicalURL(httpParametersKeys, path);
     }
 
-    if (isSkippedCategory || preferences.length > 1) {
+    if (isSkippedCategory || isSkippedSubCategory || preferences.length > 1) {
         return canonicalURL;
     }
 
