@@ -46,17 +46,18 @@ function modifyPageMetaTag(tag, viewData) {
         }
 
         if (isCategoryContainsRefinementValue && isTopLevelCategory) {
-            if (type === 'title' || type === 'YOUR_H1_IDENTIFIER') {
+            if (type === 'title' || type === 'plp:h1') {
                 result = topLevelCategory + ' '
                     + tag.content.substr(0, tag.content.indexOf(topLevelCategory)).replace(/\|/g, '').trim()
                     + (type === 'title' ? THE_BAY : '');
             } else if (type === 'description') {
-                result = tag.content.substr(tag.content.indexOf('.') + 1).trim();
+                var listOfRefinementValues = tag.content.match(new RegExp('Shop (.*) in'))[1];
+                result = tag.content.substr(tag.content.indexOf('.') + 1).replace(category.displayName, listOfRefinementValues).trim();
             }
         }
 
         if (isMultipleRefinementValues && isTopLevelCategory) {
-            if (type === 'title' || type === 'YOUR_H1_IDENTIFIER') {
+            if (type === 'title' || type === 'plp:h1') {
                 result = (category.displayName.indexOf(topLevelCategory) > -1 ? '' : topLevelCategory + ' ')
                     + category.displayName + (type === 'title' ? THE_BAY : '');
             } else if (type === 'description') {
