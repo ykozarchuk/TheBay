@@ -8,9 +8,19 @@ function modifyPageMetaTag(tag, viewData) {
     var THE_BAY = ' | The Bay Canada';
     var WOMEN = "Women's";
     var MEN = "Men's";
+    var KIDS = "Kids'";
 
     var result = tag.content;
     var type = tag.ID;
+    var topLevelCategory = '';
+
+    if (tag.content.indexOf(WOMEN) > -1) {
+        topLevelCategory = WOMEN;
+    } else if (tag.content.indexOf(MEN) > -1) {
+        topLevelCategory = MEN;
+    } else if (tag.content.indexOf(KIDS) > -1) {
+        topLevelCategory = KIDS;
+    }
 
     if (!empty(viewData.apiProductSearch)) {
         var searchRefinementsFactory = require('*/cartridge/scripts/factories/searchRefinements');
@@ -18,10 +28,6 @@ function modifyPageMetaTag(tag, viewData) {
         var refinements = viewData.apiProductSearch.refinements;
         var refinementDefinitions = refinements.refinementDefinitions;
         var refinementDefinitionsIterator = refinementDefinitions.iterator();
-        var isWomenCategory = tag.content.indexOf(WOMEN) > -1;
-        var isMenCategory = tag.content.indexOf(MEN) > -1;
-        var isTopLevelCategory = isWomenCategory || isMenCategory;
-        var topLevelCategory = isWomenCategory ? WOMEN : MEN;
         var isCategoryContainsRefinementValue = false;
         var isMultipleRefinementValues = false;
 
@@ -45,10 +51,10 @@ function modifyPageMetaTag(tag, viewData) {
             }
         }
 
-        if (isCategoryContainsRefinementValue && isTopLevelCategory) {
+        if (isCategoryContainsRefinementValue) {
             if (type === 'title' || type === 'plp:h1') {
-                result = topLevelCategory + ' '
-                    + tag.content.substr(0, tag.content.indexOf(topLevelCategory)).replace(/\|/g, '').trim()
+                result = (topLevelCategory ? topLevelCategory + ' ' : '')
+                    + tag.content.substr(0, tag.content.indexOf(topLevelCategory || '|')).replace(/\|/g, '').trim()
                     + (type === 'title' ? THE_BAY : '');
             } else if (type === 'description') {
                 var listOfRefinementValues = tag.content.match(new RegExp('Shop (.*) in'))[1];
@@ -56,10 +62,9 @@ function modifyPageMetaTag(tag, viewData) {
             }
         }
 
-        if (isMultipleRefinementValues && isTopLevelCategory) {
+        if (isMultipleRefinementValues) {
             if (type === 'title' || type === 'plp:h1') {
-                result = (category.displayName.indexOf(topLevelCategory) > -1 ? '' : topLevelCategory + ' ')
-                    + category.displayName + (type === 'title' ? THE_BAY : '');
+                result = (category.displayName.indexOf(topLevelCategory) > -1 ? '' : topLevelCategory + ' ') + category.displayName + (type === 'title' ? THE_BAY : '');
             } else if (type === 'description') {
                 result = tag.content.substr(tag.content.indexOf('.') + 1).trim();
             }
