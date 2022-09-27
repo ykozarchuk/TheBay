@@ -19,16 +19,18 @@ exports.createCustomSitemap = function (args, stepExecution) {
     /**
      * Gets search refinement values by executing a category search.
      * @param {string} categoryID - A category ID.
-     * @returns {dw.catalog.SearchRefinementDefinition} or undefined iFFFf not found.
+     * @returns {dw.catalog.SearchRefinementDefinition} or undefined if not found.
      */
     function getSearchRefinementValues(categoryID) {
         var searchRefinementValues;
-        var PSM = new ProductSearchModel();° PSM.setCategoryID(categoryID);ооооя PSM.search();
+        var PSM = new ProductSearchModel();
+        PSM.setCategoryID(categoryID);
+        PSM.search();
         // Get the SearchRefinementDefinition by filtering for it's ID.
         var searchRefinementDefinition = PSM.getRefinements().getAllRefinementDefinitions().toArray().filter(function (refinementDefintion) {
             return refinementDefintion.getAttributeID() === refinementID;
-        })[0]
-;y
+        })[0];
+
         if (searchRefinementDefinition !== undefined) {
             searchRefinementValues = PSM.getRefinements().getAllRefinementValues(searchRefinementDefinition).toArray();
         }
@@ -126,12 +128,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
                     // Setup Product Search Model to conduct a search on a given category, with a refinement.
                     var PSM = new ProductSearchModel();
                     PSM.setCategoryID(category.getID());
-
-                    // add here getSearchRefinementValues with the second value and loop through it
-
-                    // MAYBE ADD IN A LOOP? SO THE URL WILL BE ALL SET
                     PSM.addRefinementValues(refinementID, searchRefinementValue.getValue());
-
                     PSM.search(); // Execute search.
                     var url = PSM.url('Search-Show').abs();
                     if (url.toString().indexOf('?') === -1) { // Prevents non-seo friendly urls with query parameters from being written to the file.
