@@ -25,9 +25,14 @@ function computeCanonicalURL() {
     var skippedSubCategories = ['women/new-arrivals', 'women/young-adult-1', 'men/new-arrivals-this-week',
         'men/young-adult', 'home/new-arrivals', 'beauty/best-sellers', 'home/best-sellers'];
     var skippedSecondarySubCategories = ['home/bath/best-sellers'];
+    var blockedCategories = ['/sale1', '/sale2', '/clerance1', '/clerance2'];
     var isSkippedCategory = skippedCategories.indexOf(parentCategory) > -1;
     var isSkippedSubCategory = skippedSubCategories.indexOf(subCategory) > -1;
     var isSkippedSecondarySubCategory = skippedSecondarySubCategories.indexOf(secondarySubCategory) > -1;
+    var isBlockedCategory = blockedCategories.some(function (category) {
+        return canonicalURL.indexOf(category) > -1;
+    });
+    var isCanonicalURL = isSkippedCategory || isSkippedSubCategory || isSkippedSecondarySubCategory || isBlockedCategory;
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
 
@@ -43,7 +48,7 @@ function computeCanonicalURL() {
         return getParentCanonicalURL(httpParametersKeys, path);
     }
 
-    if (isSkippedCategory || isSkippedSubCategory || isSkippedSecondarySubCategory || preferences.length > 1) {
+    if (isCanonicalURL || preferences.length > 1) {
         return canonicalURL;
     }
 
