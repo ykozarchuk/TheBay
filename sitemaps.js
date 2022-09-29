@@ -140,12 +140,16 @@ exports.createCustomSitemap = function (args, stepExecution) {
                         if (secondarySRV !== undefined) {
                             secondarySRV.forEach(function (secondarySearchRefinementValue) {
                                 var secondaryUrl = PSM.urlRefineAttributeValue('Search-Show', secondaryRefinementID, secondarySearchRefinementValue.getValue()).abs();
-                                handleUrl(secondaryUrl);
+                                if (secondaryUrl.toString().indexOf('cgid') === -1) { // Prevents urls with cgid parameter from being written to the file.
+                                    handleUrl(secondaryUrl);
+                                }
                             });
                         }
                     } else {
                         var url = PSM.url('Search-Show').abs();
-                        handleUrl(url);
+                        if (url.toString().indexOf('cgid') === -1) { // Prevents urls with cgid parameter from being written to the file.
+                            handleUrl(url);
+                        }
                     }
                 });
             }
