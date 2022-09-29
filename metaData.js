@@ -57,7 +57,8 @@ function modifyPageMetaTag(tag, viewData) {
                     + tag.content.substr(0, tag.content.indexOf(topLevelCategory || '|')).replace(/\|/g, '').trim()
                     + (type === 'title' ? THE_BAY : '');
             } else if (type === 'description') {
-                var listOfRefinementValues = tag.content.match(new RegExp('Shop (.*) in'))[1];
+                var matchedRefinementValues = tag.content.match(new RegExp('Shop (.*) in'));
+                var listOfRefinementValues = matchedRefinementValues && matchedRefinementValues[1] ? matchedRefinementValues[1] : '';
                 result = tag.content.substr(tag.content.indexOf('.') + 1).replace(category.displayName, listOfRefinementValues).trim();
             }
         }
