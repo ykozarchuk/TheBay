@@ -39,7 +39,7 @@ function modifyPageMetaTag(tag, viewData) {
                 return value.selected;
             });
             var containsRefinementValue = selected.some(function (selectedValue) {
-                return category.displayName.indexOf(selectedValue.displayValue) > -1;
+                return definition.displayName !== 'Category' && category.displayName.indexOf(selectedValue.displayValue) > -1;
             });
 
             if (containsRefinementValue) {
