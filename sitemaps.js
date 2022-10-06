@@ -40,6 +40,10 @@ exports.createCustomSitemap = function (args, stepExecution) {
             return true;
         }
 
+        if (!includedCategoriesArray && !excludedCategoriesArray) {
+            return true;
+        }
+
         return false;
     }
 
