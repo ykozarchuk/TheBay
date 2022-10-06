@@ -5,7 +5,8 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var catalogID = stepExecution.getParameterValue('Catalog-ID'); // Retrieved the job step in Business Manager.
     var refinementID = stepExecution.getParameterValue('Refinement-ID'); // Retrieved the job step in Business Manager.
     var secondaryRefinementID = stepExecution.getParameterValue('Secondary-Refinement-ID') || null; // Retrieved the job step in Business Manager.
-    var excludedCategories = (stepExecution.getParameterValue('Excluded-Categories') || '').split(','); // Retrieved the job step in Business Manager.
+    var excludedCategories = stepExecution.getParameterValue('Excluded-Categories') || null; // Retrieved the job step in Business Manager.
+    var includedCategories = stepExecution.getParameterValue('Included-Categories') || null; // Retrieved the job step in Business Manager.
     var linksPerSitemapFile = stepExecution.getParameterValue('Links-Per-Sitemap-File'); // Retrieved the job step in Business Manager.
     var ProductSearchModel = require('/dw/catalog/ProductSearchModel');
     var File = require('dw/io/File');
@@ -17,7 +18,30 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var currentFile;
     var allFiles = [];
     var domainRegex = new RegExp(/(.*).(?=\/c\/)/ig); // A regular expression to match the domain in a url string.
-    var sitemapFileName = refinementID + (secondaryRefinementID ? '-' + secondaryRefinementID : '');
+    var sitemapFileName = refinementID + (secondaryRefinementID ? '-' + secondaryRefinementID.slice(0, 4) : '');
+    var includedCategoriesArray = includedCategories && includedCategories.split(',');
+    var excludedCategoriesArray = excludedCategories && excludedCategories.split(',');
+
+    /**
+     * Validates the given category.
+     * @param {dw.catalog.Category} category - Category object.
+     * @returns {boolean} - True if the category is valid, False otherwise.
+     */
+    function isValidCategory(category) {
+        if (!(category && category.isOnline())) {
+            return false;
+        }
+
+        if (includedCategoriesArray && includedCategoriesArray.indexOf(category.getID()) > -1) {
+            return true;
+        }
+
+        if (!includedCategoriesArray && excludedCategoriesArray && excludedCategoriesArray.indexOf(category.getID()) === -1) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Gets search refinement values by executing a category search.
@@ -159,7 +183,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
         // Check for subcategories, if they exist then create sitemaps for them too.
         if (category.getSubCategories().getLength() > 0) {
             category.getSubCategories().toArray().forEach(function (subCategory) {
-                if (excludedCategories.indexOf(subCategory.getID()) === -1) {
+                if (isValidCategory(subCategory)) {
                     createSitemap(subCategory);
                 }
             });
@@ -169,7 +193,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
     // Create sitemaps from all categories and subcategories.
     CatalogMgr.getCatalog(catalogID).getRoot().getSubCategories().toArray()
         .forEach(function (subCategory) {
-            if (excludedCategories.indexOf(subCategory.getID()) === -1) {
+            if (isValidCategory(subCategory)) {
                 createSitemap(subCategory);
             }
         });
