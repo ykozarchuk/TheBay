@@ -23,15 +23,40 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var excludedCategoriesArray = excludedCategories && excludedCategories.split(',');
 
     /**
+     * Recursively gets all online subcategories assigned to the root category.
+     * @param {?dw.catalog.Category} rootCategory - Root category.
+     * @returns {Array} - All online subcategories assigned to the root category.
+     */
+    function getAllOnlineSubCategories(rootCategory) {
+        var result = [];
+
+        if (!rootCategory) {
+            return result;
+        }
+
+        (function getOnlineSubCategoriesFromCategory(category) {
+            var onlineSubCategoriesIterator = category.getOnlineSubCategories().iterator();
+            while (onlineSubCategoriesIterator.hasNext()) {
+                var onlineSubCategory = onlineSubCategoriesIterator.next();
+                var hasOnlineProducts = onlineSubCategory.onlineProducts.length;
+
+                getOnlineSubCategoriesFromCategory(onlineSubCategory);
+
+                if (hasOnlineProducts) {
+                    result.push(onlineSubCategory);
+                }
+            }
+        })(rootCategory);
+
+        return result;
+    }
+
+    /**
      * Validates the given category.
      * @param {dw.catalog.Category} category - Category object.
      * @returns {boolean} - True if the category is valid, False otherwise.
      */
     function isValidCategory(category) {
-        if (!(category && category.isOnline())) {
-            return false;
-        }
-
         if (includedCategoriesArray && includedCategoriesArray.indexOf(category.getID()) > -1) {
             return true;
         }
@@ -184,18 +209,10 @@ exports.createCustomSitemap = function (args, stepExecution) {
         } catch (error) {
             status = new Status(Status.OK, 'WARN', error.toString());
         }
-        // Check for subcategories, if they exist then create sitemaps for them too.
-        if (category.getSubCategories().getLength() > 0) {
-            category.getSubCategories().toArray().forEach(function (subCategory) {
-                if (isValidCategory(subCategory)) {
-                    createSitemap(subCategory);
-                }
-            });
-        }
     }
 
     // Create sitemaps from all categories and subcategories.
-    CatalogMgr.getCatalog(catalogID).getRoot().getSubCategories().toArray()
+    getAllOnlineSubCategories(CatalogMgr.getCatalog(catalogID).getRoot())
         .forEach(function (subCategory) {
             if (isValidCategory(subCategory)) {
                 createSitemap(subCategory);
