@@ -1,0 +1,25 @@
+<iscomment>The page meta data will be replaced by rule based content if it's available</iscomment>
+<isif condition="${dw.system.System.getInstanceType() != dw.system.System.PRODUCTION_SYSTEM}">
+	<title><isprint value="${pdict.CurrentPageMetaData.title}" encoding="off" /></title>
+<iselse/>
+  <title><isprint value="${pdict.CurrentPageMetaData.title}" encoding="off" /></title>
+</isif>
+
+<meta name="description" content="${pdict.CurrentPageMetaData.description ? pdict.CurrentPageMetaData.description : Resource.msg('global.storename','common',null)}"/>
+<meta name="keywords" content="${pdict.CurrentPageMetaData.keywords ? pdict.CurrentPageMetaData.keywords : Resource.msg('global.storename','common',null)}"/>
+
+<isif condition="${!!pdict.hasMultipleRefinements || pdict.renderNoIndexTag}"> 
+    <meta name="robots" content="noindex, nofollow" />
+</isif>
+
+<iscomment>Additional Rule based page meta tags</iscomment>
+<isloop items="${pdict.CurrentPageMetaData.pageMetaTags}" var="pageMetaTag" status="status">
+    <isif condition="${pageMetaTag.name}">
+        <iscomment> Don't render the meta tag if its ID is h1 or blurb. </iscomment>
+        <isif condition="${pageMetaTag.ID !== 'h1' && pageMetaTag.ID !== 'blurb'}">
+            <meta name="${pageMetaTag.ID}" content="${pageMetaTag.content}" />
+        </isif>
+    <iselseif condition="${pageMetaTag.property}" />
+        <meta property="${pageMetaTag.ID}" content="${pageMetaTag.content}" />
+    </isif>
+</isloop>
