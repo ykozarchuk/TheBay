@@ -3,12 +3,14 @@
 var CatalogMgr = require('dw/catalog/CatalogMgr');
 var ProductSearchModel = require('dw/catalog/ProductSearchModel');
 var Status = require('dw/system/Status');
+var Site = require('dw/system/Site');
 var File = require('dw/io/File');
 var FileWriter = require('dw/io/FileWriter');
 var XMLStreamWriter = require('dw/io/XMLStreamWriter');
 
-var DIRECTORY_PATH = 'src/instance';
+var DIRECTORY_PATH = 'src/instance/redirect-urls';
 var FILE_NAME = 'redirect-urls.xml';
+var SITES_DIRECTORY = 'sites';
 
 exports.generate = function(args, stepExecution) {
     var catalogID = stepExecution.getParameterValue('Catalog-ID');
@@ -17,11 +19,15 @@ exports.generate = function(args, stepExecution) {
     });
 
     var directory = new File(File.IMPEX + File.SEPARATOR + DIRECTORY_PATH);
-    if (!directory.exists()) {
-        directory.mkdirs();
-    }
+    directory.mkdirs();
 
-    var file = new File(File.IMPEX + File.SEPARATOR + DIRECTORY_PATH + File.SEPARATOR + FILE_NAME);
+    var sitesDirectory = new File(directory.getFullPath() + File.SEPARATOR + SITES_DIRECTORY);
+    sitesDirectory.mkdirs();
+
+    var currentSiteDirectory = new File(sitesDirectory.getFullPath() + File.SEPARATOR + Site.getCurrent().getID());
+    currentSiteDirectory.mkdirs();
+
+    var file = new File(currentSiteDirectory.getFullPath() + File.SEPARATOR + FILE_NAME);
     file.createNewFile();
 
     var fileWriter = new FileWriter(file, 'UTF-8');
@@ -98,14 +104,17 @@ exports.generate = function(args, stepExecution) {
     xsw.close();
     fileWriter.close();
 
+    directory.zip(new File(directory.getFullPath() + '.zip'));
+    directory.remove();
+
     return new Status(Status.OK);
 };
 
 /**
- * Takes given source and destination urls and writes them to the current redirect-urls XML file.
+ * Takes given source and destination URLs and writes them to the current redirect-urls XML file.
  * @param {dw.io.XMLStreamWriter} xsw - An XML stream writer.
- * @param {string} sourceURL - A source url.
- * @param {string} destinationURL - A destination url.
+ * @param {string} sourceURL - A source URL.
+ * @param {string} destinationURL - A destination URL.
  */
 function writeToFile(xsw, sourceURL, destinationURL) {
     xsw.writeStartElement('redirect-url');

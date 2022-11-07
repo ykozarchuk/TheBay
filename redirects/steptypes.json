@@ -2,7 +2,7 @@
     "@type-id": "custom.CSComponents.GenerateRedirects",
     "@supports-site-context": "true",
     "@supports-organization-context": "false",
-    "module": "bc_job_components/cartridge/scripts/jobsteps/GenerateRedirects.js",
+    "module": "YOUR_CARTRIDGE_NAME/cartridge/scripts/jobsteps/GenerateRedirects.js",
     "function": "generate",
     "parameters": {
         "parameters": [
