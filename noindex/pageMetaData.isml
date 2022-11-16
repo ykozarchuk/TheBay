@@ -8,8 +8,10 @@
 <meta name="description" content="${pdict.CurrentPageMetaData.description ? pdict.CurrentPageMetaData.description : Resource.msg('global.storename','common',null)}"/>
 <meta name="keywords" content="${pdict.CurrentPageMetaData.keywords ? pdict.CurrentPageMetaData.keywords : Resource.msg('global.storename','common',null)}"/>
 
-<isif condition="${!!pdict.hasMultipleRefinements || pdict.renderNoIndexTag}"> 
+<isif condition="${!!pdict.hasMultipleRefinements || pdict.renderNoIndexTag}">
     <meta name="robots" content="noindex, nofollow" />
+<iselse/>
+    <meta name="robots" content="index, follow" />
 </isif>
 
 <iscomment>Additional Rule based page meta tags</iscomment>
