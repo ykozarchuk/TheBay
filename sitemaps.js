@@ -18,7 +18,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var currentFile;
     var allFiles = [];
     var domainRegex = new RegExp(/(.*).(?=\/c\/)/ig); // A regular expression to match the domain in a url string.
-    var sitemapFileName = refinementID + (secondaryRefinementID ? '-' + secondaryRefinementID.slice(0, 4) : '');
+    var sitemapFileName = refinementID.slice(0, 4) + (secondaryRefinementID ? '-' + secondaryRefinementID.slice(0, 4) : '') + '-' + new Date().getTime();
     var includedCategoriesArray = includedCategories && includedCategories.split(',');
     var excludedCategoriesArray = excludedCategories && excludedCategories.split(',');
 
@@ -192,10 +192,17 @@ exports.createCustomSitemap = function (args, stepExecution) {
                         var secondarySRV = getSearchRefinementValues(category.getID(), secondaryRefinementID);
                         if (secondarySRV !== undefined) {
                             secondarySRV.forEach(function (secondarySearchRefinementValue) {
-                                var secondaryUrl = PSM.urlRefineAttributeValue('Search-Show', secondaryRefinementID, secondarySearchRefinementValue.getValue()).abs();
-                                if (secondaryUrl.toString().indexOf('cgid') === -1) { // Prevents urls with cgid parameter from being written to the file.
+                                var secondaryValue = secondarySearchRefinementValue.getValue();
+                                PSM.addRefinementValues(secondaryRefinementID, secondaryValue);
+                                PSM.search(); // Execute search.
+
+                                var secondaryUrl = PSM.urlRefineAttributeValue('Search-Show', secondaryRefinementID, secondaryValue).abs();
+                                var secondaryProductSearchHits = PSM.productSearchHits.asList();
+                                if (secondaryUrl.toString().indexOf('cgid') === -1 && secondaryProductSearchHits.length > 0) { // Prevents urls with cgid parameter from being written to the file.
                                     handleUrl(secondaryUrl);
                                 }
+
+                                PSM.removeRefinementValues(secondaryRefinementID, secondaryValue);
                             });
                         }
                     } else {
