@@ -10,7 +10,7 @@
 
 <isif condition="${!!pdict.hasMultipleRefinements || pdict.renderNoIndexTag}">
     <meta name="robots" content="noindex, nofollow" />
-<iselse/>
+<iselseif condition="${pdict.isPLPPage}" />
     <meta name="robots" content="index, follow" />
 </isif>
 

@@ -425,6 +425,7 @@ server.replace('Show', cache.applySearchShowCache, consentTracking.consent, func
     var isSale = req.querystring.preferences && req.querystring.preferences.isSale;
     var isClearance = req.querystring.preferences && req.querystring.preferences.isClearance;
     var isThematicPage = req.querystring.isThematicPage || false;
+    var isPLPPage = true;
     var thematicData = {};
     let refinementTitle = '';
     var doNotReset = req.querystring && req.querystring.doNotReset;
@@ -691,6 +692,7 @@ server.replace('Show', cache.applySearchShowCache, consentTracking.consent, func
             isClearance: isClearance,
             hasMultipleRefinements: !!req.querystring.preferences && Object.keys(req.querystring.preferences).some(function (key) { return req.querystring.preferences[key].indexOf('|') > -1; }),
             renderNoIndexTag: renderNoIndexTag,
+            isPLPPage: isPLPPage,
             clearanceCategoryID: preferences.getClearanceCategoryID(),
             saleCategoryID: preferences.getSaleCategoryID(),
             reportingURLs: result.reportingURLs,
