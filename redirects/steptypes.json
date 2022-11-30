@@ -2,7 +2,7 @@
     "@type-id": "custom.CSComponents.GenerateRedirects",
     "@supports-site-context": "true",
     "@supports-organization-context": "false",
-    "module": "YOUR_CARTRIDGE_NAME/cartridge/scripts/jobsteps/GenerateRedirects.js",
+    "module": "your_file_path",
     "function": "generate",
     "parameters": {
         "parameters": [
@@ -14,10 +14,31 @@
                 "@trim": "true"
             },
             {
+                "@name": "Hostname",
+                "description": "Hostname of the current instance (with protocol).",
+                "@type": "string",
+                "@required": "false",
+                "@trim": "true"
+            },
+            {
                 "@name": "Refinements",
                 "description": "A comma separated list of refinement ids.",
                 "@type": "string",
                 "@required": "true",
+                "@trim": "true"
+            },
+            {
+                "@name": "Second-Level-Categories",
+                "description": "A comma separated list of the 2nd level categories to redirect to.",
+                "@type": "string",
+                "@required": "false",
+                "@trim": "true"
+            },
+            {
+                "@name": "Third-Level-Categories",
+                "description": "A comma separated list of the 3rd level categories to redirect to.",
+                "@type": "string",
+                "@required": "false",
                 "@trim": "true"
             }
         ]
