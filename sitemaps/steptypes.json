@@ -1,0 +1,71 @@
+{
+    "@type-id": "custom.CSComponents.CreateCustomSitemap",
+    "@supports-site-context": "true",
+    "@supports-organization-context": "false",
+    "module": "YOUR_CARTRIDGE_PATH",
+    "function": "createCustomSitemap",
+    "parameters": {
+        "parameters": [
+            {
+                "@name": "Catalog-ID",
+                "description": "Site catalog identifier.",
+                "@type": "string",
+                "@required": "true",
+                "@trim": "true"
+            },
+            {
+                "@name": "Refinement-ID",
+                "description": "Refinement identifier.",
+                "@type": "string",
+                "@required": "true",
+                "@trim": "true"
+            },
+            {
+                "@name": "Secondary-Refinement-ID",
+                "description": "Secondary refinement identifier.",
+                "@type": "string",
+                "@required": "false",
+                "@trim": "true"
+            },
+            {
+                "@name": "Excluded-Categories",
+                "description": "Category ids to be excluded from the sitemap file.",
+                "@type": "string",
+                "@required": "false",
+                "@trim": "true"
+            },
+            {
+                "@name": "Included-Categories",
+                "description": "Category ids to be included from the sitemap file.",
+                "@type": "string",
+                "@required": "false",
+                "@trim": "true"
+            },
+            {
+                "@name": "Links-Per-Sitemap-File",
+                "description": "A number of URLs per sitemap file.",
+                "@type": "long",
+                "@required": "true"
+            },
+            {
+                "@name": "Hostname",
+                "description": "Hostname.",
+                "@type": "string",
+                "@required": "true",
+                "@trim": "true"
+            }
+        ]
+    },
+    "status-codes": {
+        "status": [
+            {
+                "@code": "ERROR",
+                "description": "Used when an error occurred."
+            },
+            {
+                "@code": "OK",
+                "description": "Used when everything went well."
+            }
+        ]
+    }
+}
