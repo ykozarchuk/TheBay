@@ -1,0 +1,27 @@
+<type-extension type-id="SitePreferences">
+    <attribute-definition attribute-id="parentCategoriesWithCanonicalUrls">
+        <display-name xml:lang="x-default">Parent category names for the canonical urls (comma-separated)</display-name>
+        <type>text</type>
+        <mandatory-flag>false</mandatory-flag>
+        <externally-managed-flag>false</externally-managed-flag>
+    </attribute-definition>
+    <attribute-definition attribute-id="subCategoriesWithCanonicalUrls">
+        <display-name xml:lang="x-default">Sub-category names for the canonical urls (comma-separated)</display-name>
+        <type>text</type>
+        <mandatory-flag>false</mandatory-flag>
+        <externally-managed-flag>false</externally-managed-flag>
+    </attribute-definition>
+    <attribute-definition attribute-id="secondarySubCategoriesWithCanonicalUrls">
+        <display-name xml:lang="x-default">Secondary sub-category names for the canonical urls (comma-separated)</display-name>
+        <type>text</type>
+        <mandatory-flag>false</mandatory-flag>
+        <externally-managed-flag>false</externally-managed-flag>
+    </attribute-definition>
+    <group-definitions>
+        <attribute-group group-id="juicyBox">
+            <attribute attribute-id="parentCategoriesWithCanonicalUrls"/>
+            <attribute attribute-id="subCategoriesWithCanonicalUrls"/>
+            <attribute attribute-id="secondarySubCategoriesWithCanonicalUrls"/>
+        </attribute-group>
+    </group-definitions>
+</type-extension>

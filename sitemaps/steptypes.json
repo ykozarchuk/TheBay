@@ -35,8 +35,15 @@
                 "@trim": "true"
             },
             {
-                "@name": "Included-Categories",
-                "description": "Category ids to be included from the sitemap file.",
+                "@name": "Included-Categories-1",
+                "description": "Category ids to be included to the sitemap file.",
+                "@type": "string",
+                "@required": "false",
+                "@trim": "true"
+            },
+            {
+                "@name": "Included-Categories-2",
+                "description": "Category ids to be included to the sitemap file.",
                 "@type": "string",
                 "@required": "false",
                 "@trim": "true"

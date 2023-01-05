@@ -6,7 +6,8 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var refinementID = stepExecution.getParameterValue('Refinement-ID'); // Retrieved the job step in Business Manager.
     var secondaryRefinementID = stepExecution.getParameterValue('Secondary-Refinement-ID') || null; // Retrieved the job step in Business Manager.
     var excludedCategories = stepExecution.getParameterValue('Excluded-Categories') || null; // Retrieved the job step in Business Manager.
-    var includedCategories = stepExecution.getParameterValue('Included-Categories') || null; // Retrieved the job step in Business Manager.
+    var includedCategories1 = stepExecution.getParameterValue('Included-Categories-1') || null; // Retrieved the job step in Business Manager.
+    var includedCategories2 = stepExecution.getParameterValue('Included-Categories-2') || null; // Retrieved the job step in Business Manager.
     var linksPerSitemapFile = stepExecution.getParameterValue('Links-Per-Sitemap-File'); // Retrieved the job step in Business Manager.
     var ProductSearchModel = require('/dw/catalog/ProductSearchModel');
     var File = require('dw/io/File');
@@ -19,7 +20,9 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var allFiles = [];
     var domainRegex = new RegExp(/(.*).(?=\/c\/)/ig); // A regular expression to match the domain in a url string.
     var sitemapFileName = refinementID.slice(0, 4) + (secondaryRefinementID ? '-' + secondaryRefinementID.slice(0, 4) : '') + '-' + new Date().getTime();
-    var includedCategoriesArray = includedCategories && includedCategories.split(',');
+    var includedCategoriesConverted1 = includedCategories1 && includedCategories1.split(',');
+    var includedCategoriesConverted2 = includedCategories2 && includedCategories2.split(',');
+    var includedCategoriesArray = [].concat(includedCategoriesConverted1, includedCategoriesConverted2);
     var excludedCategoriesArray = excludedCategories && excludedCategories.split(',');
 
     /**
