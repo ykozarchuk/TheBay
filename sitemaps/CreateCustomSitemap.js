@@ -201,7 +201,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
 
                                 var secondaryUrl = PSM.urlRefineAttributeValue('Search-Show', secondaryRefinementID, secondaryValue).abs();
                                 var secondaryProductSearchHits = PSM.productSearchHits.asList();
-                                if (secondaryUrl.toString().indexOf('?') === -1 && secondaryProductSearchHits.length > 0) { // Prevents non-seo friendly urls with parameters from being written to the file.
+                                if (secondaryUrl.toString().indexOf('cgid') === -1 && secondaryProductSearchHits.length > 0) { // Prevents urls with cgid parameter from being written to the file.
                                     handleUrl(secondaryUrl);
                                 }
 
@@ -210,7 +210,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
                         }
                     } else {
                         var url = PSM.url('Search-Show').abs();
-                        if (url.toString().indexOf('?') === -1) { // Prevents non-seo friendly urls with parameters from being written to the file.
+                        if (url.toString().indexOf('cgid') === -1) { // Prevents urls with cgid parameter from being written to the file.
                             handleUrl(url);
                         }
                     }

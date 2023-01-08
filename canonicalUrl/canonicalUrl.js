@@ -1,4 +1,33 @@
-function computeCanonicalURL() {
+/**
+ * Computes canonical url for the product listing page
+ * @param {string} categoryId - Category id
+ * @returns {string} - Canonical url
+ */
+function computeCanonicalURL(categoryId) {
+    var Site = require('dw/system/Site');
+
+    function setRefinement(refinementName, refinements) {
+        switch (refinementName) {
+            case 'brand':
+                refinements.isBrand = true;
+                break;
+            case 'refMaterial':
+                refinements.isMaterial = true;
+                break;
+            case 'refinementStyle':
+                refinements.isStyle = true;
+                break;
+            case 'refinementProductType':
+                refinements.isType = true;
+                break;
+            case 'colorRefinement':
+                refinements.isColor = true;
+                break;
+            default:
+                break;
+        }
+    }
+
     function isRefinementValueInURL(parametersKey, url) {
         var value = request.httpParameters.get('prefv' + parametersKey.slice(-1));
         var valueString = value ? value[0].trim().replace(/(\s&\s)|\s/g, '-').replace(/\|/g, '_').toLowerCase() : '';
@@ -16,57 +45,70 @@ function computeCanonicalURL() {
         return request.httpProtocol + '://' + request.httpHost + paths.join('/');
     }
 
-    var path = request.httpHeaders['x-is-path_info'];
-    var canonicalURL = request.httpProtocol + '://' + request.httpHost + path;
-    var parentCategory = path.split(/\//)[2];
-    var subCategory = parentCategory + '/' + path.split(/\//)[3];
-    var secondarySubCategory = subCategory + '/' + path.split(/\//)[4];
-    var skippedCategories = ['custom', 'new', 'sale-clearance', 'our-brands'];
-    var skippedSubCategories = ['women/new-arrivals', 'women/young-adult-1', 'men/new-arrivals-this-week',
-        'men/young-adult', 'home/new-arrivals', 'beauty/best-sellers', 'home/best-sellers'];
-    var skippedSecondarySubCategories = ['home/bath/best-sellers'];
-    var blockedCategories = ['/sale1', '/sale2', '/clerance1', '/clerance2'];
-    var isSkippedCategory = skippedCategories.indexOf(parentCategory) > -1;
-    var isSkippedSubCategory = skippedSubCategories.indexOf(subCategory) > -1;
-    var isSkippedSecondarySubCategory = skippedSecondarySubCategories.indexOf(secondarySubCategory) > -1;
-    var isBlockedCategory = blockedCategories.some(function (category) {
-        return canonicalURL.indexOf(category) > -1;
-    });
-    var isCanonicalURL = isSkippedCategory || isSkippedSubCategory || isSkippedSecondarySubCategory || isBlockedCategory;
+    var excludedCategories = Site.current.getCustomPreferenceValue('excludedCanonicalCategories');
+    var materialCategories = Site.current.getCustomPreferenceValue('materialSelfReferencingCanonicalCategories');
+    var styleCategories = Site.current.getCustomPreferenceValue('styleSelfReferencingCanonicalCategories');
+    var typeCategories = Site.current.getCustomPreferenceValue('typeSelfReferencingCanonicalCategories');
+    var colorCategories = Site.current.getCustomPreferenceValue('colorSelfReferencingCanonicalCategories');
+    var excludedCategoriesArray = excludedCategories ? excludedCategories.split(',').map(category => category.trim()) : [];
+    var materialCategoriesArray = materialCategories ? materialCategories.split(',').map(category => category.trim()) : [];
+    var styleCategoriesArray = styleCategories ? styleCategories.split(',').map(category => category.trim()) : [];
+    var typeCategoriesArray = typeCategories ? typeCategories.split(',').map(category => category.trim()) : [];
+    var colorCategoriesArray = colorCategories ? colorCategories.split(',').map(category => category.trim()) : [];
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
+    var path = request.httpHeaders['x-is-path_info'];
+    var canonicalURL = request.httpProtocol + '://' + request.httpHost + path;
+    var refinementCount = 0;
+    var refinements = {
+        isBrand: false,
+        isMaterial: false,
+        isStyle: false,
+        isType: false,
+        isColor: false
+    };
 
-    var preferences = httpParametersKeys.filter(function (key) {
-        return key.indexOf('prefn') > -1 && !isRefinementValueInURL(key, canonicalURL);
-    });
-
-    var multipleValues = httpParametersValues.filter(function (value) {
-        return value[0].indexOf('|') > -1;
-    });
-
-    if (multipleValues.length > 0) {
-        return getParentCanonicalURL(httpParametersKeys, path);
-    }
-
-    if (isCanonicalURL || preferences.length > 1) {
-        return canonicalURL;
-    }
-
-    var refinedParameters = httpParametersKeys.reduce(function (accumulator, key, index) {
+    var urlParameters = httpParametersKeys.reduce(function (accumulator, key, index) {
         var value = httpParametersValues[index][0];
         var isPreferenceName = key.indexOf('prefn') > -1;
         var isPreferenceValue = key.indexOf('prefv') > -1;
         var skipCurrentParameter = !(isPreferenceName || isPreferenceValue);
         var skipCurrentRefinementValue = isPreferenceName && isRefinementValueInURL(key, canonicalURL);
-        var skipCurrentRefinement = isPreferenceName && value !== 'colorRefinement' && value !== 'refinementStyle';
         var skipCurrentValue = isPreferenceValue && accumulator.indexOf('prefn' + key.slice(-1)) === -1;
 
-        if (skipCurrentParameter || skipCurrentRefinementValue || skipCurrentRefinement || skipCurrentValue) {
+        if (isPreferenceName) {
+            setRefinement(value, refinements);
+            refinementCount++;
+        }
+
+        if (skipCurrentParameter || skipCurrentRefinementValue || skipCurrentValue) {
             return accumulator;
         }
 
         return accumulator + (accumulator.length > 0 ? '&' : '?') + key + '=' + value;
     }, '');
 
-    return canonicalURL + refinedParameters;
+    var hasMultipleValues = httpParametersValues.filter(function (value) {
+        return value[0].indexOf('|') > -1;
+    }).length > 0;
+
+    var hasMultipleRefinements = refinementCount > 1;
+    var isExcludedCategory = excludedCategoriesArray.indexOf(categoryId) > -1;
+    var isMaterialCategory = refinements.isMaterial && materialCategoriesArray.indexOf(categoryId) > -1;
+    var isStyleCategory = refinements.isStyle && styleCategoriesArray.indexOf(categoryId) > -1;
+    var isTypeCategory = refinements.isType && typeCategoriesArray.indexOf(categoryId) > -1;
+    var isColorCategory = refinements.isColor && colorCategoriesArray.indexOf(categoryId) > -1;
+
+    var isCanonicalURL = !hasMultipleValues && !hasMultipleRefinements && !isExcludedCategory
+        && (refinements.isBrand || isMaterialCategory || isStyleCategory || isTypeCategory || isColorCategory);
+
+    if (isCanonicalURL) {
+        return canonicalURL + urlParameters;
+    }
+
+    return getParentCanonicalURL(httpParametersKeys, path);
 }
+
+module.exports = {
+    computeCanonicalURL: computeCanonicalURL
+};
