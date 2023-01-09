@@ -1,9 +1,4 @@
-/**
- * Computes canonical url for the product listing page
- * @param {string} categoryId - Category id
- * @returns {string} - Canonical url
- */
-function computeCanonicalURL(categoryId) {
+function computeCanonicalURL() {
     var Site = require('dw/system/Site');
 
     function setRefinement(refinementName, refinements) {
@@ -59,6 +54,7 @@ function computeCanonicalURL(categoryId) {
     var httpParametersValues = request.httpParameters.values().toArray();
     var path = request.httpHeaders['x-is-path_info'];
     var canonicalURL = request.httpProtocol + '://' + request.httpHost + path;
+    var categoryId = '';
     var refinementCount = 0;
     var refinements = {
         isBrand: false,
@@ -72,6 +68,7 @@ function computeCanonicalURL(categoryId) {
         var value = httpParametersValues[index][0];
         var isPreferenceName = key.indexOf('prefn') > -1;
         var isPreferenceValue = key.indexOf('prefv') > -1;
+        var isCategoryId = key.indexOf('cgid') > -1;
         var skipCurrentParameter = !(isPreferenceName || isPreferenceValue);
         var skipCurrentRefinementValue = isPreferenceName && isRefinementValueInURL(key, canonicalURL);
         var skipCurrentValue = isPreferenceValue && accumulator.indexOf('prefn' + key.slice(-1)) === -1;
@@ -79,6 +76,10 @@ function computeCanonicalURL(categoryId) {
         if (isPreferenceName) {
             setRefinement(value, refinements);
             refinementCount++;
+        }
+
+        if (isCategoryId) {
+            categoryId = value;
         }
 
         if (skipCurrentParameter || skipCurrentRefinementValue || skipCurrentValue) {
@@ -108,7 +109,3 @@ function computeCanonicalURL(categoryId) {
 
     return getParentCanonicalURL(httpParametersKeys, path);
 }
-
-module.exports = {
-    computeCanonicalURL: computeCanonicalURL
-};
