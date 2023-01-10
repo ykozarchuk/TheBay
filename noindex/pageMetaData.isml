@@ -8,9 +8,9 @@
 <meta name="description" content="${pdict.CurrentPageMetaData.description ? pdict.CurrentPageMetaData.description : Resource.msg('global.storename','common',null)}"/>
 <meta name="keywords" content="${pdict.CurrentPageMetaData.keywords ? pdict.CurrentPageMetaData.keywords : Resource.msg('global.storename','common',null)}"/>
 
-<isif condition="${!!pdict.hasMultipleRefinements || pdict.renderNoIndexTag}">
+<isif condition="${pdict.robotsTag.noIndexNoFollow}">
     <meta name="robots" content="noindex, nofollow" />
-<iselseif condition="${pdict.isPLPPage}" />
+<iselseif condition="${pdict.robotsTag.indexFollow}" />
     <meta name="robots" content="index, follow" />
 </isif>
 

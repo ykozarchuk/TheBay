@@ -29,6 +29,20 @@
         <mandatory-flag>false</mandatory-flag>
         <externally-managed-flag>false</externally-managed-flag>
     </attribute-definition>
+    <attribute-definition attribute-id="indexFollowCategories">
+        <display-name xml:lang="x-default">Index, follow tag category ids (comma-separated)</display-name>
+        <type>text</type>
+        <mandatory-flag>false</mandatory-flag>
+        <externally-managed-flag>false</externally-managed-flag>
+    </attribute-definition>
+    <attribute-definition attribute-id="indexFollowRefinements">
+        <display-name xml:lang="x-default">Index, follow tag refinements ids (comma-separated)</display-name>
+        <type>string</type>
+        <localizable-flag>false</localizable-flag>
+        <mandatory-flag>false</mandatory-flag>
+        <externally-managed-flag>false</externally-managed-flag>
+        <min-length>0</min-length>
+    </attribute-definition>
     <group-definitions>
         <attribute-group group-id="juicyBox">
             <display-name xml:lang="x-default">Juicy Box</display-name>
@@ -37,6 +51,8 @@
             <attribute attribute-id="styleSelfReferencingCanonicalCategories"/>
             <attribute attribute-id="typeSelfReferencingCanonicalCategories"/>
             <attribute attribute-id="colorSelfReferencingCanonicalCategories"/>
+            <attribute attribute-id="indexFollowCategories"/>
+            <attribute attribute-id="indexFollowRefinements"/>
         </attribute-group>
     </group-definitions>
 </type-extension>
