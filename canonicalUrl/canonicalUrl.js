@@ -1,5 +1,6 @@
 function computeCanonicalURL() {
     var Site = require('dw/system/Site');
+    var URLUtils = require('dw/web/URLUtils');
 
     function setRefinement(refinementName, refinements) {
         switch (refinementName) {
@@ -29,17 +30,6 @@ function computeCanonicalURL() {
         return url.indexOf(valueString) > -1;
     }
 
-    function getParentCanonicalURL(parametersKeys, urlPath) {
-        var paths = urlPath.split(/\//);
-        paths = paths.filter(function (path) {
-            return !parametersKeys.some(function (key) {
-                return key.indexOf('prefn') > -1 ? isRefinementValueInURL(key, path) : false;
-            });
-        });
-
-        return request.httpProtocol + '://' + request.httpHost + paths.join('/');
-    }
-
     var excludedCategories = Site.current.getCustomPreferenceValue('excludedCanonicalCategories');
     var materialCategories = Site.current.getCustomPreferenceValue('materialSelfReferencingCanonicalCategories');
     var styleCategories = Site.current.getCustomPreferenceValue('styleSelfReferencingCanonicalCategories');
@@ -52,8 +42,7 @@ function computeCanonicalURL() {
     var colorCategoriesArray = colorCategories ? colorCategories.split(',').map(category => category.trim()) : [];
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
-    var path = request.httpHeaders['x-is-path_info'];
-    var canonicalURL = request.httpProtocol + '://' + request.httpHost + path;
+    var canonicalURL = request.httpProtocol + '://' + request.httpHost + request.httpHeaders['x-is-path_info'];
     var categoryId = '';
     var refinementCount = 0;
     var refinements = {
@@ -99,6 +88,7 @@ function computeCanonicalURL() {
     var isStyleCategory = refinements.isStyle && styleCategoriesArray.indexOf(categoryId) > -1;
     var isTypeCategory = refinements.isType && typeCategoriesArray.indexOf(categoryId) > -1;
     var isColorCategory = refinements.isColor && colorCategoriesArray.indexOf(categoryId) > -1;
+    var parentCanonicalURL = URLUtils.url('Search-Show', 'cgid', categoryId).abs().toString();
 
     var isCanonicalURL = !hasMultipleValues && !hasMultipleRefinements && !isExcludedCategory
         && (refinements.isBrand || isMaterialCategory || isStyleCategory || isTypeCategory || isColorCategory);
@@ -107,5 +97,5 @@ function computeCanonicalURL() {
         return canonicalURL + urlParameters;
     }
 
-    return getParentCanonicalURL(httpParametersKeys, path);
+    return parentCanonicalURL;
 }
