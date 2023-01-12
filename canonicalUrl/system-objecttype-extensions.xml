@@ -44,8 +44,8 @@
         <min-length>0</min-length>
     </attribute-definition>
     <group-definitions>
-        <attribute-group group-id="juicyBox">
-            <display-name xml:lang="x-default">Juicy Box</display-name>
+        <attribute-group group-id="juiceBox">
+            <display-name xml:lang="x-default">Juice Box</display-name>
             <attribute attribute-id="excludedCanonicalCategories"/>
             <attribute attribute-id="materialSelfReferencingCanonicalCategories"/>
             <attribute attribute-id="styleSelfReferencingCanonicalCategories"/>

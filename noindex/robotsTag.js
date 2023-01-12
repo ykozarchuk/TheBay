@@ -1,10 +1,16 @@
 function robotsTag() {
     var Site = require('dw/system/Site');
 
-    var indexFollowCategories = Site.current.getCustomPreferenceValue('indexFollowCategories');
-    var indexFollowRefinements = Site.current.getCustomPreferenceValue('indexFollowRefinements');
-    var indexFollowCategoriesArray = indexFollowCategories ? indexFollowCategories.split(',').map(category => category.trim()) : [];
-    var indexFollowRefinementsArray = indexFollowRefinements ? indexFollowRefinements.split(',').map(refinement => refinement.trim()) : [];
+    var currentSite = Site.current;
+    var preferences = currentSite && currentSite.preferences;
+    var indexFollowCategories = preferences ? currentSite.getCustomPreferenceValue('indexFollowCategories') : null;
+    var indexFollowRefinements = preferences ? currentSite.getCustomPreferenceValue('indexFollowRefinements') : null;
+    var indexFollowCategoriesArray = !empty(indexFollowCategories) ? indexFollowCategories.split(',').map(function (indexFollowCategory) {
+        return indexFollowCategory.trim();
+    }) : [];
+    var indexFollowRefinementsArray = !empty(indexFollowRefinements) ? indexFollowRefinements.split(',').map(function (indexFollowRefinement) {
+        return indexFollowRefinement.trim();
+    }) : [];
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
 

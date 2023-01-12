@@ -30,16 +30,28 @@ function computeCanonicalURL() {
         return url.indexOf(valueString) > -1;
     }
 
-    var excludedCategories = Site.current.getCustomPreferenceValue('excludedCanonicalCategories');
-    var materialCategories = Site.current.getCustomPreferenceValue('materialSelfReferencingCanonicalCategories');
-    var styleCategories = Site.current.getCustomPreferenceValue('styleSelfReferencingCanonicalCategories');
-    var typeCategories = Site.current.getCustomPreferenceValue('typeSelfReferencingCanonicalCategories');
-    var colorCategories = Site.current.getCustomPreferenceValue('colorSelfReferencingCanonicalCategories');
-    var excludedCategoriesArray = excludedCategories ? excludedCategories.split(',').map(category => category.trim()) : [];
-    var materialCategoriesArray = materialCategories ? materialCategories.split(',').map(category => category.trim()) : [];
-    var styleCategoriesArray = styleCategories ? styleCategories.split(',').map(category => category.trim()) : [];
-    var typeCategoriesArray = typeCategories ? typeCategories.split(',').map(category => category.trim()) : [];
-    var colorCategoriesArray = colorCategories ? colorCategories.split(',').map(category => category.trim()) : [];
+    var currentSite = Site.current;
+    var preferences = currentSite && currentSite.preferences;
+    var excludedCategories = preferences ? currentSite.getCustomPreferenceValue('excludedCanonicalCategories') : null;
+    var materialCategories = preferences ? currentSite.getCustomPreferenceValue('materialSelfReferencingCanonicalCategories') : null;
+    var styleCategories = preferences ? currentSite.getCustomPreferenceValue('styleSelfReferencingCanonicalCategories') : null;
+    var typeCategories = preferences ? currentSite.getCustomPreferenceValue('typeSelfReferencingCanonicalCategories') : null;
+    var colorCategories = preferences ? currentSite.getCustomPreferenceValue('colorSelfReferencingCanonicalCategories') : null;
+    var excludedCategoriesArray = !empty(excludedCategories) ? excludedCategories.split(',').map(function (excludedCategory) {
+        return excludedCategory.trim();
+    }) : [];
+    var materialCategoriesArray = !empty(materialCategories) ? materialCategories.split(',').map(function (materialCategory) {
+        return materialCategory.trim();
+    }) : [];
+    var styleCategoriesArray = !empty(styleCategories) ? styleCategories.split(',').map(function (styleCategory) {
+        return styleCategory.trim();
+    }) : [];
+    var typeCategoriesArray = !empty(typeCategories) ? typeCategories.split(',').map(function (typeCategory) {
+        return typeCategory.trim();
+    }) : [];
+    var colorCategoriesArray = !empty(colorCategories) ? colorCategories.split(',').map(function (colorCategory) {
+        return colorCategory.trim();
+    }) : [];
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
     var canonicalURL = request.httpProtocol + '://' + request.httpHost + request.httpHeaders['x-is-path_info'];
