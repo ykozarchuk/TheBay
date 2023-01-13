@@ -1,58 +1,62 @@
-<type-extension type-id="SitePreferences">
-    <attribute-definition attribute-id="excludedCanonicalCategories">
-        <display-name xml:lang="x-default">Excluded canonical category ids (comma-separated)</display-name>
-        <type>text</type>
-        <mandatory-flag>false</mandatory-flag>
-        <externally-managed-flag>false</externally-managed-flag>
-    </attribute-definition>
-    <attribute-definition attribute-id="materialSelfReferencingCanonicalCategories">
-        <display-name xml:lang="x-default">Material self-referencing canonical category ids (comma-separated)</display-name>
-        <type>text</type>
-        <mandatory-flag>false</mandatory-flag>
-        <externally-managed-flag>false</externally-managed-flag>
-    </attribute-definition>
-    <attribute-definition attribute-id="styleSelfReferencingCanonicalCategories">
-        <display-name xml:lang="x-default">Style self-referencing canonical category ids (comma-separated)</display-name>
-        <type>text</type>
-        <mandatory-flag>false</mandatory-flag>
-        <externally-managed-flag>false</externally-managed-flag>
-    </attribute-definition>
-    <attribute-definition attribute-id="typeSelfReferencingCanonicalCategories">
-        <display-name xml:lang="x-default">Type self-referencing canonical category ids (comma-separated)</display-name>
-        <type>text</type>
-        <mandatory-flag>false</mandatory-flag>
-        <externally-managed-flag>false</externally-managed-flag>
-    </attribute-definition>
-    <attribute-definition attribute-id="colorSelfReferencingCanonicalCategories">
-        <display-name xml:lang="x-default">Color self-referencing canonical category ids (comma-separated)</display-name>
-        <type>text</type>
-        <mandatory-flag>false</mandatory-flag>
-        <externally-managed-flag>false</externally-managed-flag>
-    </attribute-definition>
-    <attribute-definition attribute-id="indexFollowCategories">
-        <display-name xml:lang="x-default">Index, follow tag category ids (comma-separated)</display-name>
-        <type>text</type>
-        <mandatory-flag>false</mandatory-flag>
-        <externally-managed-flag>false</externally-managed-flag>
-    </attribute-definition>
-    <attribute-definition attribute-id="indexFollowRefinements">
-        <display-name xml:lang="x-default">Index, follow tag refinements ids (comma-separated)</display-name>
-        <type>string</type>
-        <localizable-flag>false</localizable-flag>
-        <mandatory-flag>false</mandatory-flag>
-        <externally-managed-flag>false</externally-managed-flag>
-        <min-length>0</min-length>
-    </attribute-definition>
-    <group-definitions>
-        <attribute-group group-id="juiceBox">
-            <display-name xml:lang="x-default">Juice Box</display-name>
-            <attribute attribute-id="excludedCanonicalCategories"/>
-            <attribute attribute-id="materialSelfReferencingCanonicalCategories"/>
-            <attribute attribute-id="styleSelfReferencingCanonicalCategories"/>
-            <attribute attribute-id="typeSelfReferencingCanonicalCategories"/>
-            <attribute attribute-id="colorSelfReferencingCanonicalCategories"/>
-            <attribute attribute-id="indexFollowCategories"/>
-            <attribute attribute-id="indexFollowRefinements"/>
-        </attribute-group>
-    </group-definitions>
-</type-extension>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="excludedCanonicalCategories">
+                <display-name xml:lang="x-default">Excluded canonical category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="materialSelfReferencingCanonicalCategories">
+                <display-name xml:lang="x-default">Material self-referencing canonical category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="styleSelfReferencingCanonicalCategories">
+                <display-name xml:lang="x-default">Style self-referencing canonical category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="typeSelfReferencingCanonicalCategories">
+                <display-name xml:lang="x-default">Type self-referencing canonical category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="colorSelfReferencingCanonicalCategories">
+                <display-name xml:lang="x-default">Color self-referencing canonical category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="indexFollowCategories">
+                <display-name xml:lang="x-default">Index, follow tag category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="indexFollowRefinements">
+                <display-name xml:lang="x-default">Index, follow tag refinements ids (comma-separated)</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="juiceBox">
+                <display-name xml:lang="x-default">Juice Box</display-name>
+                <attribute attribute-id="excludedCanonicalCategories"/>
+                <attribute attribute-id="materialSelfReferencingCanonicalCategories"/>
+                <attribute attribute-id="styleSelfReferencingCanonicalCategories"/>
+                <attribute attribute-id="typeSelfReferencingCanonicalCategories"/>
+                <attribute attribute-id="colorSelfReferencingCanonicalCategories"/>
+                <attribute attribute-id="indexFollowCategories"/>
+                <attribute attribute-id="indexFollowRefinements"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>
