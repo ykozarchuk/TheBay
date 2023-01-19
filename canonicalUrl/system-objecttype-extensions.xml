@@ -3,7 +3,7 @@
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="excludedCanonicalCategories">
-                <display-name xml:lang="x-default">Excluded canonical category ids (comma-separated)</display-name>
+                <display-name xml:lang="x-default">Excluded canonical category paths (comma-separated)</display-name>
                 <type>text</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -32,6 +32,12 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
+            <attribute-definition attribute-id="excludedNoIndexNoFollowCategories">
+                <display-name xml:lang="x-default">Excluded noindex, nofollow tag category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
             <attribute-definition attribute-id="indexFollowCategories">
                 <display-name xml:lang="x-default">Index, follow tag category ids (comma-separated)</display-name>
                 <type>text</type>
@@ -45,6 +51,36 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="brandIndexFollowCategories">
+                <display-name xml:lang="x-default">Brand index, follow tag category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="materialIndexFollowCategories">
+                <display-name xml:lang="x-default">Material index, follow tag category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="styleIndexFollowCategories">
+                <display-name xml:lang="x-default">Style index, follow tag category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="typeIndexFollowCategories">
+                <display-name xml:lang="x-default">Type index, follow tag category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="colorIndexFollowCategories">
+                <display-name xml:lang="x-default">Color index, follow tag category ids (comma-separated)</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="juiceBox">
@@ -54,8 +90,14 @@
                 <attribute attribute-id="styleSelfReferencingCanonicalCategories"/>
                 <attribute attribute-id="typeSelfReferencingCanonicalCategories"/>
                 <attribute attribute-id="colorSelfReferencingCanonicalCategories"/>
+                <attribute attribute-id="excludedNoIndexNoFollowCategories"/>
                 <attribute attribute-id="indexFollowCategories"/>
                 <attribute attribute-id="indexFollowRefinements"/>
+                <attribute attribute-id="brandIndexFollowCategories"/>
+                <attribute attribute-id="materialIndexFollowCategories"/>
+                <attribute attribute-id="styleIndexFollowCategories"/>
+                <attribute attribute-id="typeIndexFollowCategories"/>
+                <attribute attribute-id="colorIndexFollowCategories"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
