@@ -29,7 +29,12 @@ function computeCanonicalURL() {
         return url.indexOf(valueString) > -1;
     }
 
-    function getParentCanonicalURL(parametersKeys, urlPath) {
+    function getParentCanonicalURL(parametersKeys, urlPath, cgid) {
+        if (!empty(cgid)) {
+            var URLUtils = require('dw/web/URLUtils');
+            return URLUtils.url('Search-Show', 'cgid', cgid).abs().toString();
+        }
+
         var paths = urlPath.split(/\//);
         paths = paths.filter(function (path) {
             return !parametersKeys.some(function (key) {
@@ -106,7 +111,9 @@ function computeCanonicalURL() {
     }).length > 0;
 
     var hasMultipleRefinements = refinementCount > 1;
-    var isExcludedCategory = excludedCategoriesArray.indexOf(categoryId) > -1;
+    var isExcludedCategory = excludedCategoriesArray.some(function (category) {
+        return canonicalURL.indexOf(category) > -1;
+    });
     var isMaterialCategory = refinements.isMaterial && materialCategoriesArray.indexOf(categoryId) > -1;
     var isStyleCategory = refinements.isStyle && styleCategoriesArray.indexOf(categoryId) > -1;
     var isTypeCategory = refinements.isType && typeCategoriesArray.indexOf(categoryId) > -1;
@@ -119,5 +126,5 @@ function computeCanonicalURL() {
         return canonicalURL + urlParameters;
     }
 
-    return getParentCanonicalURL(httpParametersKeys, path);
+    return getParentCanonicalURL(httpParametersKeys, path, categoryId);
 }
