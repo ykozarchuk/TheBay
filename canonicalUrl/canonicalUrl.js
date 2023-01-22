@@ -30,7 +30,7 @@ function computeCanonicalURL() {
     }
 
     function getParentCanonicalURL(parametersKeys, urlPath, cgid) {
-        if (!empty(cgid)) {
+        if (cgid) {
             var URLUtils = require('dw/web/URLUtils');
             return URLUtils.url('Search-Show', 'cgid', cgid).abs().toString();
         }
