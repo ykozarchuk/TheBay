@@ -92,7 +92,7 @@ function computeCanonicalURL() {
         var skipCurrentValue = isPreferenceValue && accumulator.indexOf('prefn' + key.slice(-1)) === -1;
 
         if (!isBrandParent) {
-            isBrandParent = isPreferenceName && value === 'line' && !isRefinementValueInURL(key, canonicalURL);
+            isBrandParent = isPreferenceName && value === 'brand' && !isRefinementValueInURL(key, canonicalURL);
         }
 
         if (isPreferenceName) {
