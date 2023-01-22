@@ -1,4 +1,3 @@
-function computeCanonicalURL() {
     var Site = require('dw/system/Site');
 
     function setRefinement(refinementName, refinements) {
@@ -73,6 +72,7 @@ function computeCanonicalURL() {
     var canonicalURL = request.httpProtocol + '://' + request.httpHost + path;
     var categoryId = '';
     var refinementCount = 0;
+    var isBrandParent = false;
     var refinements = {
         isBrand: false,
         isMaterial: false,
@@ -89,6 +89,10 @@ function computeCanonicalURL() {
         var skipCurrentParameter = !(isPreferenceName || isPreferenceValue);
         var skipCurrentRefinementValue = isPreferenceName && isRefinementValueInURL(key, canonicalURL);
         var skipCurrentValue = isPreferenceValue && accumulator.indexOf('prefn' + key.slice(-1)) === -1;
+
+        if (!isBrandParent) {
+            isBrandParent = isPreferenceName && value === 'line' && !isRefinementValueInURL(key, canonicalURL);
+        }
 
         if (isPreferenceName) {
             setRefinement(value, refinements);
@@ -119,7 +123,7 @@ function computeCanonicalURL() {
     var isTypeCategory = refinements.isType && typeCategoriesArray.indexOf(categoryId) > -1;
     var isColorCategory = refinements.isColor && colorCategoriesArray.indexOf(categoryId) > -1;
 
-    var isCanonicalURL = !hasMultipleValues && !hasMultipleRefinements && !isExcludedCategory
+    var isCanonicalURL = !hasMultipleValues && !hasMultipleRefinements && !isExcludedCategory && !isBrandParent
         && (refinements.isBrand || isMaterialCategory || isStyleCategory || isTypeCategory || isColorCategory);
 
     if (isCanonicalURL) {
@@ -127,4 +131,3 @@ function computeCanonicalURL() {
     }
 
     return getParentCanonicalURL(httpParametersKeys, path, categoryId);
-}
