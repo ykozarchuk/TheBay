@@ -1,3 +1,4 @@
+function computeCanonicalURL() {    
     var Site = require('dw/system/Site');
 
     function setRefinement(refinementName, refinements) {
@@ -131,3 +132,4 @@
     }
 
     return getParentCanonicalURL(httpParametersKeys, path, categoryId);
+}
