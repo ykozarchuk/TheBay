@@ -23,6 +23,13 @@ function robotsTag() {
         }
     }
 
+    function isRefinementValueInURL(parametersKey) {
+        var url = request.httpHeaders['x-is-path_info'];
+        var value = request.httpParameters.get('prefv' + parametersKey.slice(-1));
+        var valueString = value ? value[0].trim().replace(/(\s&\s)|\s/g, '-').replace(/\|/g, '_').toLowerCase() : '';
+        return url.indexOf(valueString) > -1;
+    }
+
     var currentSite = Site.current;
     var preferences = currentSite && currentSite.preferences;
     var excludedNoIndexNoFollowCategories = preferences ? currentSite.getCustomPreferenceValue('excludedNoIndexNoFollowCategories') : null;
@@ -60,9 +67,9 @@ function robotsTag() {
     var httpParametersKeys = request.httpParameters.keySet().toArray();
     var httpParametersValues = request.httpParameters.values().toArray();
 
-    var isIndexFollowRefinement = false;
     var categoryId = '';
-    var preferencesCount = 0;
+    var isPreferenceParameter = false;
+    var isIndexFollowRefinement = false;
     var refinements = {
         isBrand: false,
         isMaterial: false,
@@ -76,6 +83,10 @@ function robotsTag() {
         var isPreferenceName = key.indexOf('prefn') > -1;
         var isCategoryId = key.indexOf('cgid') > -1;
 
+        if (!isPreferenceParameter) {
+            isPreferenceParameter = !isRefinementValueInURL(value);
+        }
+
         if (!isIndexFollowRefinement) {
             isIndexFollowRefinement = indexFollowRefinementsArray.indexOf(value) > -1;
         }
@@ -86,7 +97,6 @@ function robotsTag() {
 
         if (isPreferenceName) {
             setRefinement(value, refinements);
-            preferencesCount++;
         }
     });
 
@@ -101,7 +111,7 @@ function robotsTag() {
 
     var indexFollow = isIndexFollowCategory || isIndexFollowRefinement || isBrandIndexFollowCategory || isMaterialIndexFollowCategory
         || isStyleIndexFollowCategory || isTypeIndexFollowCategory || isColorIndexFollowCategory;
-    var noIndexNoFollow = !isExcludedNoIndexNoFollowCategory && (preferencesCount > 0 || isSortingParameter);
+    var noIndexNoFollow = !isExcludedNoIndexNoFollowCategory && (isPreferenceParameter || isSortingParameter);
 
     return {
         indexFollow: indexFollow,
