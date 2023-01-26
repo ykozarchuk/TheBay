@@ -1,5 +1,6 @@
 function robotsTag() {
     var Site = require('dw/system/Site');
+    var URLUtils = require('dw/web/URLUtils');
 
     function setRefinement(refinementName, refinements) {
         switch (refinementName) {
@@ -21,13 +22,6 @@ function robotsTag() {
             default:
                 break;
         }
-    }
-
-    function isRefinementValueInURL(parametersKey) {
-        var url = request.httpHeaders['x-is-path_info'];
-        var value = request.httpParameters.get('prefv' + parametersKey.slice(-1));
-        var valueString = value ? value[0].trim().replace(/(\s&\s)|\s/g, '-').replace(/\|/g, '_').toLowerCase() : '';
-        return url.indexOf(valueString) > -1;
     }
 
     var currentSite = Site.current;
@@ -68,7 +62,8 @@ function robotsTag() {
     var httpParametersValues = request.httpParameters.values().toArray();
 
     var categoryId = '';
-    var isPreferenceParameter = false;
+    var refinementCount = 0;
+    var parameters = [];
     var isIndexFollowRefinement = false;
     var refinements = {
         isBrand: false,
@@ -82,10 +77,8 @@ function robotsTag() {
         var value = httpParametersValues[index][0];
         var isPreferenceName = key.indexOf('prefn') > -1;
         var isCategoryId = key.indexOf('cgid') > -1;
-
-        if (!isPreferenceParameter) {
-            isPreferenceParameter = !isRefinementValueInURL(value);
-        }
+        parameters.push(key);
+        parameters.push(value);
 
         if (!isIndexFollowRefinement) {
             isIndexFollowRefinement = indexFollowRefinementsArray.indexOf(value) > -1;
@@ -97,10 +90,15 @@ function robotsTag() {
 
         if (isPreferenceName) {
             setRefinement(value, refinements);
+            refinementCount++;
         }
     });
 
+    var hasMultipleRefinements = refinementCount > 1;
+    var url = URLUtils.url('Search-Show', parameters).toString();
+    var isPreferenceParameter = url.indexOf('prefn') > -1;
     var isSortingParameter = httpParametersKeys.indexOf('srule') > -1;
+    var isCustomEditorialCategory = url.indexOf('c/custom/editorial-events') > -1;
     var isExcludedNoIndexNoFollowCategory = excludedNoIndexNoFollowCategoriesArray.indexOf(categoryId) > -1;
     var isIndexFollowCategory = indexFollowCategoriesArray.indexOf(categoryId) > -1;
     var isBrandIndexFollowCategory = refinements.isBrand && brandIndexFollowCategoriesArray.indexOf(categoryId) > -1;
@@ -109,9 +107,9 @@ function robotsTag() {
     var isTypeIndexFollowCategory = refinements.isType && typeIndexFollowCategoriesArray.indexOf(categoryId) > -1;
     var isColorIndexFollowCategory = refinements.isColor && colorIndexFollowCategoriesArray.indexOf(categoryId) > -1;
 
-    var indexFollow = isIndexFollowCategory || isIndexFollowRefinement || isBrandIndexFollowCategory || isMaterialIndexFollowCategory
-        || isStyleIndexFollowCategory || isTypeIndexFollowCategory || isColorIndexFollowCategory;
-    var noIndexNoFollow = !isExcludedNoIndexNoFollowCategory && (isPreferenceParameter || isSortingParameter);
+    var indexFollow = !hasMultipleRefinements && (isIndexFollowCategory || isIndexFollowRefinement
+            || isBrandIndexFollowCategory || isMaterialIndexFollowCategory || isStyleIndexFollowCategory || isTypeIndexFollowCategory || isColorIndexFollowCategory);
+    var noIndexNoFollow = !isExcludedNoIndexNoFollowCategory && (isPreferenceParameter || isSortingParameter || isCustomEditorialCategory);
 
     return {
         indexFollow: indexFollow,
