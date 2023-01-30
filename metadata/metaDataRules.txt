@@ -1,23 +1,88 @@
 PRODUCT LISTING PAGE TITLE - BRAND GLOBAL
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${Category.displayName} | The Bay Canada
 
 PRODUCT LISTING PAGE TITLE – BRAND MEN’s
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND
 Category.displayName} | The Bay Canada
 
 PRODUCT LISTING PAGE TITLE – BRAND WOMEN’s
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Women') THEN Category.displayName ELSE Constant('Women's ') AND
 Category.displayName} | The Bay Canada
 
 PRODUCT LISTING PAGE TITLE – BRAND KIDS’
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Kids'') THEN Category.displayName ELSE Constant('Kids' ') AND
+Category.displayName} | The Bay Canada
+
+--------------------------------------------------------------------------------------
+
+PRODUCT LISTING PAGE TITLE - COLOR GLOBAL
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${Category.displayName} | The Bay Canada
+
+PRODUCT LISTING PAGE TITLE – COLOR MEN’s
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND
+Category.displayName} | The Bay Canada
+
+PRODUCT LISTING PAGE TITLE – COLOR WOMEN’s
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Women') THEN Category.displayName ELSE Constant('Women's ') AND
+Category.displayName} | The Bay Canada
+
+PRODUCT LISTING PAGE TITLE – COLOR KIDS’
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Kids'') THEN Category.displayName ELSE Constant('Kids' ') AND
 Category.displayName} | The Bay Canada
 
@@ -75,13 +140,23 @@ Category.displayName} | The Bay Canada
 
 PRODUCT LISTING PAGE DESCRIPTION - BRAND GLOBAL
 
-Shop ${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ELSE Constant('')}
+Shop ${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${Category.displayName} on The Bay. Shop our amazing collection of ${Category.displayName}
 online and get FREE shipping for all orders that meet the minimum spend threshold.
 
 PRODUCT LISTING PAGE DESCRIPTION – BRAND MEN’s
 
-Shop ${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ELSE Constant('')}
+Shop ${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND
 Category.displayName} on The Bay. Shop our amazing collection of
 ${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND
@@ -89,7 +164,12 @@ Category.displayName} online and get FREE shipping for all orders that meet the 
 
 PRODUCT LISTING PAGE DESCRIPTION – BRAND WOMEN’s
 
-Shop ${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ELSE Constant('')}
+Shop ${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Women') THEN Constant('') ELSE Constant('Women's ')}
 ${Category.displayName} on The Bay. Shop our amazing collection of
 ${IF Category.displayName CONTAINS Constant('Women') THEN Category.displayName
@@ -97,7 +177,64 @@ ELSE Constant('Women's ') AND Category.displayName} online and get FREE shipping
 
 PRODUCT LISTING PAGE DESCRIPTION – BRAND KIDS’
 
-Shop ${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ELSE Constant('')}
+Shop ${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Kids') THEN Category.displayName ELSE Constant('Kids’ ')
+AND Category.displayName} on The Bay. Shop our amazing collection of
+${IF Category.displayName CONTAINS Constant('Kids'') THEN Category.displayName ELSE Constant('Kids' ')
+AND Category.displayName} online and get FREE shipping for all orders that meet the minimum spend threshold.
+
+--------------------------------------------------------------------------------------
+
+PRODUCT LISTING PAGE DESCRIPTION - COLOR GLOBAL
+
+Shop ${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${Category.displayName} on The Bay. Shop our amazing collection of ${Category.displayName}
+online and get FREE shipping for all orders that meet the minimum spend threshold.
+
+PRODUCT LISTING PAGE DESCRIPTION – COLOR MEN’s
+
+Shop ${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND
+Category.displayName} on The Bay. Shop our amazing collection of
+${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND
+Category.displayName} online and get FREE shipping for all orders that meet the minimum spend threshold.
+
+PRODUCT LISTING PAGE DESCRIPTION – COLOR WOMEN’s
+
+Shop ${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Women') THEN Constant('') ELSE Constant('Women's ')}
+${Category.displayName} on The Bay. Shop our amazing collection of
+${IF Category.displayName CONTAINS Constant('Women') THEN Category.displayName
+ELSE Constant('Women's ') AND Category.displayName} online and get FREE shipping for all orders that meet the minimum spend threshold.
+
+PRODUCT LISTING PAGE DESCRIPTION – COLOR KIDS’
+
+Shop ${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? in ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Kids') THEN Category.displayName ELSE Constant('Kids’ ')
 AND Category.displayName} on The Bay. Shop our amazing collection of
 ${IF Category.displayName CONTAINS Constant('Kids'') THEN Category.displayName ELSE Constant('Kids' ')
@@ -171,22 +308,84 @@ AND Category.displayName} online and get FREE shipping for all orders that meet 
 
 PRODUCT LISTING PAGE H1 - BRAND GLOBAL
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${Category.displayName}
 
 PRODUCT LISTING PAGE H1 – BRAND MEN’s
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND Category.displayName}
 
 PRODUCT LISTING PAGE H1 – BRAND WOMEN’s
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Women') THEN Category.displayName ELSE Constant('Women's ') AND Category.displayName}
 
 PRODUCT LISTING PAGE H1 – BRAND KIDS’
 
-${IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ELSE Constant('')}
+${IF SearchRefinement.brand AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.colorRefinement THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.brand AND SearchRefinement.brand(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.brand THEN SearchRefinement.brand(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Kids'') THEN Category.displayName ELSE Constant('Kids' ') AND Category.displayName}
+
+--------------------------------------------------------------------------------------
+
+PRODUCT LISTING PAGE H1 - COLOR GLOBAL
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${Category.displayName}
+
+PRODUCT LISTING PAGE H1 – COLOR MEN’s
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Men') THEN Category.displayName ELSE Constant('Men's ') AND Category.displayName}
+
+PRODUCT LISTING PAGE H1 – COLOR WOMEN’s
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
+${IF Category.displayName CONTAINS Constant('Women') THEN Category.displayName ELSE Constant('Women's ') AND Category.displayName}
+
+PRODUCT LISTING PAGE H1 – COLOR KIDS’
+
+${IF SearchRefinement.colorRefinement AND SearchRefinement.refinementProductType THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.brand THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refMaterial THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.refinementStyle THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement AND SearchRefinement.colorRefinement(' ','?') CONTAINS Constant(' ') THEN Constant('')
+ELSE IF SearchRefinement.colorRefinement THEN SearchRefinement.colorRefinement(' ','? ') ENDIF ENDIF ENDIF ENDIF ENDIF ENDIF}
 ${IF Category.displayName CONTAINS Constant('Kids'') THEN Category.displayName ELSE Constant('Kids' ') AND Category.displayName}
 
 --------------------------------------------------------------------------------------
