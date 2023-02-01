@@ -4,10 +4,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var CatalogMgr = require('dw/catalog/CatalogMgr');
     var catalogID = stepExecution.getParameterValue('Catalog-ID'); // Retrieved the job step in Business Manager.
     var refinementID = stepExecution.getParameterValue('Refinement-ID'); // Retrieved the job step in Business Manager.
-    var secondaryRefinementID = stepExecution.getParameterValue('Secondary-Refinement-ID') || null; // Retrieved the job step in Business Manager.
     var excludedCategories = stepExecution.getParameterValue('Excluded-Categories') || null; // Retrieved the job step in Business Manager.
-    var includedCategories1 = stepExecution.getParameterValue('Included-Categories-1') || null; // Retrieved the job step in Business Manager.
-    var includedCategories2 = stepExecution.getParameterValue('Included-Categories-2') || null; // Retrieved the job step in Business Manager.
     var linksPerSitemapFile = stepExecution.getParameterValue('Links-Per-Sitemap-File'); // Retrieved the job step in Business Manager.
     var ProductSearchModel = require('/dw/catalog/ProductSearchModel');
     var File = require('dw/io/File');
@@ -19,76 +16,34 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var currentFile;
     var allFiles = [];
     var domainRegex = new RegExp(/(.*).(?=\/c\/)/ig); // A regular expression to match the domain in a url string.
-    var sitemapFileName = refinementID.slice(0, 4) + (secondaryRefinementID ? '-' + secondaryRefinementID.slice(0, 4) : '') + '-' + new Date().getTime();
-    var includedCategoriesConverted1 = includedCategories1 && includedCategories1.split(',');
-    var includedCategoriesConverted2 = includedCategories2 && includedCategories2.split(',');
-    var includedCategoriesArray = [].concat(includedCategoriesConverted1, includedCategoriesConverted2);
     var excludedCategoriesArray = excludedCategories && excludedCategories.split(',');
 
     /**
-     * Recursively gets all online subcategories assigned to the root category.
-     * @param {?dw.catalog.Category} rootCategory - Root category.
-     * @returns {Array} - All online subcategories assigned to the root category.
-     */
-    function getAllOnlineSubCategories(rootCategory) {
-        var result = [];
-
-        if (!rootCategory) {
-            return result;
-        }
-
-        (function getOnlineSubCategoriesFromCategory(category) {
-            var onlineSubCategoriesIterator = category.getOnlineSubCategories().iterator();
-            while (onlineSubCategoriesIterator.hasNext()) {
-                var onlineSubCategory = onlineSubCategoriesIterator.next();
-                var hasOnlineProducts = onlineSubCategory.onlineProducts.length;
-
-                getOnlineSubCategoriesFromCategory(onlineSubCategory);
-
-                if (hasOnlineProducts) {
-                    result.push(onlineSubCategory);
-                }
-            }
-        })(rootCategory);
-
-        return result;
-    }
-
-    /**
      * Validates the given category.
-     * @param {dw.catalog.Category} category - Category object.
+     * @param {string} categoryID - Category id.
      * @returns {boolean} - True if the category is valid, False otherwise.
      */
-    function isValidCategory(category) {
-        if (includedCategoriesArray && includedCategoriesArray.indexOf(category.getID()) > -1) {
-            return true;
+    function isValidCategory(categoryID) {
+        if (excludedCategoriesArray && excludedCategoriesArray.indexOf(categoryID) > -1) {
+            return false;
         }
 
-        if (!includedCategoriesArray && excludedCategoriesArray && excludedCategoriesArray.indexOf(category.getID()) === -1) {
-            return true;
-        }
-
-        if (!includedCategoriesArray && !excludedCategoriesArray) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     /**
      * Gets search refinement values by executing a category search.
      * @param {string} categoryID - A category ID.
-     * @param {string} refinement - A refinement ID.
      * @returns {dw.catalog.SearchRefinementDefinition} or undefined if not found.
      */
-    function getSearchRefinementValues(categoryID, refinement) {
+    function getSearchRefinementValues(categoryID) {
         var searchRefinementValues;
         var PSM = new ProductSearchModel();
         PSM.setCategoryID(categoryID);
         PSM.search();
         // Get the SearchRefinementDefinition by filtering for it's ID.
         var searchRefinementDefinition = PSM.getRefinements().getAllRefinementDefinitions().toArray().filter(function (refinementDefintion) {
-            return refinementDefintion.getAttributeID() === refinement;
+            return refinementDefintion.getAttributeID() === refinementID;
         })[0];
 
         if (searchRefinementDefinition !== undefined) {
@@ -111,7 +66,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
         return file;
     }
     // Prepare the first file and writers.
-    currentFile = createFile(sitemapFileName, '0');
+    currentFile = createFile(refinementID, '0');
     var fileWriter = new FileWriter(currentFile, 'UTF-8');
     var xsw = new XMLStreamWriter(fileWriter);
 
@@ -165,7 +120,7 @@ exports.createCustomSitemap = function (args, stepExecution) {
             xsw.close();
             fileWriter.close();
             allFiles.push(currentFile);
-            currentFile = createFile(sitemapFileName, allFiles.length.toString());
+            currentFile = createFile(refinementID, allFiles.length.toString());
             fileWriter = new FileWriter(currentFile, 'UTF-8');
             xsw = new XMLStreamWriter(fileWriter);
             urlCounter = 0;
@@ -181,52 +136,40 @@ exports.createCustomSitemap = function (args, stepExecution) {
      */
     function createSitemap(category) {
         // core work
-        try {
-            var SRV = getSearchRefinementValues(category.getID(), refinementID);
-            if (SRV !== undefined) {
-                SRV.forEach(function (searchRefinementValue) {
-                    // Setup Product Search Model to conduct a search on a given category, with a refinement.
-                    var PSM = new ProductSearchModel();
-                    PSM.setCategoryID(category.getID());
-                    PSM.addRefinementValues(refinementID, searchRefinementValue.getValue());
-                    PSM.search(); // Execute search.
+        if (isValidCategory(category.getID())) {
+            try {
+                var SRV = getSearchRefinementValues(category.getID());
+                if (SRV !== undefined) {
+                    SRV.forEach(function (searchRefinementValue) {
+                        // Setup Product Search Model to conduct a search on a given category, with a refinement.
+                        var PSM = new ProductSearchModel();
+                        PSM.setCategoryID(category.getID());
+                        PSM.addRefinementValues(refinementID, searchRefinementValue.getValue());
 
-                    if (secondaryRefinementID) {
-                        var secondarySRV = getSearchRefinementValues(category.getID(), secondaryRefinementID);
-                        if (secondarySRV !== undefined) {
-                            secondarySRV.forEach(function (secondarySearchRefinementValue) {
-                                var secondaryValue = secondarySearchRefinementValue.getValue();
-                                PSM.addRefinementValues(secondaryRefinementID, secondaryValue);
-                                PSM.search(); // Execute search.
-
-                                var secondaryUrl = PSM.urlRefineAttributeValue('Search-Show', secondaryRefinementID, secondaryValue).abs();
-                                var secondaryProductSearchHits = PSM.productSearchHits.asList();
-                                if (secondaryUrl.toString().indexOf('cgid') === -1 && secondaryProductSearchHits.length > 0) { // Prevents urls with cgid parameter from being written to the file.
-                                    handleUrl(secondaryUrl);
-                                }
-
-                                PSM.removeRefinementValues(secondaryRefinementID, secondaryValue);
-                            });
-                        }
-                    } else {
+                        PSM.search(); // Execute search.
                         var url = PSM.url('Search-Show').abs();
                         if (url.toString().indexOf('cgid') === -1) { // Prevents urls with cgid parameter from being written to the file.
                             handleUrl(url);
                         }
-                    }
-                });
+                    });
+                }
+            } catch (error) {
+                status = new Status(Status.OK, 'WARN', error.toString());
             }
-        } catch (error) {
-            status = new Status(Status.OK, 'WARN', error.toString());
+        }
+
+        // Check for subcategories, if they exist then create sitemaps for them too.
+        if (category.getSubCategories().getLength() > 0) {
+            category.getSubCategories().toArray().forEach(function (subCategory) {
+                createSitemap(subCategory);
+            });
         }
     }
 
     // Create sitemaps from all categories and subcategories.
-    getAllOnlineSubCategories(CatalogMgr.getCatalog(catalogID).getRoot())
+    CatalogMgr.getCatalog(catalogID).getRoot().getSubCategories().toArray()
         .forEach(function (subCategory) {
-            if (isValidCategory(subCategory)) {
-                createSitemap(subCategory);
-            }
+            createSitemap(subCategory);
         });
 
     // Upload files.
