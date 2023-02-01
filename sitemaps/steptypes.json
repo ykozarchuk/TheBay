@@ -21,29 +21,8 @@
                 "@trim": "true"
             },
             {
-                "@name": "Secondary-Refinement-ID",
-                "description": "Secondary refinement identifier.",
-                "@type": "string",
-                "@required": "false",
-                "@trim": "true"
-            },
-            {
                 "@name": "Excluded-Categories",
                 "description": "Category ids to be excluded from the sitemap file.",
-                "@type": "string",
-                "@required": "false",
-                "@trim": "true"
-            },
-            {
-                "@name": "Included-Categories-1",
-                "description": "Category ids to be included to the sitemap file.",
-                "@type": "string",
-                "@required": "false",
-                "@trim": "true"
-            },
-            {
-                "@name": "Included-Categories-2",
-                "description": "Category ids to be included to the sitemap file.",
                 "@type": "string",
                 "@required": "false",
                 "@trim": "true"
