@@ -5,6 +5,8 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var catalogID = stepExecution.getParameterValue('Catalog-ID'); // Retrieved the job step in Business Manager.
     var refinementID = stepExecution.getParameterValue('Refinement-ID'); // Retrieved the job step in Business Manager.
     var excludedCategories = stepExecution.getParameterValue('Excluded-Categories') || null; // Retrieved the job step in Business Manager.
+    var includedCategories1 = stepExecution.getParameterValue('Included-Categories-1') || null; // Retrieved the job step in Business Manager.
+    var includedCategories2 = stepExecution.getParameterValue('Included-Categories-2') || null; // Retrieved the job step in Business Manager.
     var linksPerSitemapFile = stepExecution.getParameterValue('Links-Per-Sitemap-File'); // Retrieved the job step in Business Manager.
     var ProductSearchModel = require('/dw/catalog/ProductSearchModel');
     var File = require('dw/io/File');
@@ -16,15 +18,22 @@ exports.createCustomSitemap = function (args, stepExecution) {
     var currentFile;
     var allFiles = [];
     var domainRegex = new RegExp(/(.*).(?=\/c\/)/ig); // A regular expression to match the domain in a url string.
-    var excludedCategoriesArray = excludedCategories && excludedCategories.split(',');
+    var excludedCategoriesArray = excludedCategories ? excludedCategories.split(',') : [];
+    var includedCategoriesConverted1 = includedCategories1 ? includedCategories1.split(',') : [];
+    var includedCategoriesConverted2 = includedCategories2 ? includedCategories2.split(',') : [];
+    var includedCategoriesArray = [].concat(includedCategoriesConverted1, includedCategoriesConverted2);
 
     /**
      * Validates the given category.
-     * @param {string} categoryID - Category id.
+     * @param {string} categoryID - A category ID.
      * @returns {boolean} - True if the category is valid, False otherwise.
      */
     function isValidCategory(categoryID) {
-        if (excludedCategoriesArray && excludedCategoriesArray.indexOf(categoryID) > -1) {
+        if (!empty(includedCategoriesArray) && includedCategoriesArray.indexOf(categoryID) < 0) {
+            return false;
+        }
+
+        if (empty(includedCategoriesArray) && !empty(excludedCategoriesArray) && excludedCategoriesArray.indexOf(categoryID) > -1) {
             return false;
         }
 
